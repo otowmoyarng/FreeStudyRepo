@@ -1,0 +1,14 @@
+.csvlist {
+    overflow: auto;
+    margin: 0px;
+}
+table {
+    border-collapse: collapse;
+    border: 1px solid black;
+}
+thead {
+    background-color: grey;
+}
+tr:hover {
+    background-color: lightsteelblue;
+}
