@@ -5,30 +5,26 @@ import sys
 def main():
     # 引数１からCSVファイルを取得する
     args = sys.argv
-    haserror = False
     csvfile = ''
 
     # 引数なしはエラーとする
     if 1 == len(args):
         print("CSVファイルが指定されていません。")
-        haserror = True
+        return
     else:
         csvfile = args[1]
 
         # ファイル名が不正の場合はエラー
         if os.path.exists(csvfile) == False:
             print("指定したファイルは存在しません。")
-            haserror = True
+            return
         
         # CSVファイルではない場合はエラーとする
         if csvfile.endswith(".csv") == False:
             print("ＣＳＶファイル以外が指定されています。")
-            haserror = True
+            return
         
-    if haserror == True:
-        return()
-    else:
-        print("CSVファイルをhtmlに変換します。")
+    print("CSVファイルをhtmlに変換します。")
 
     # CSVファイル読み込み
     csvdata = pd.read_csv(csvfile, na_filter=False)
