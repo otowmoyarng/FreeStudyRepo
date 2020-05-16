@@ -11,7 +11,7 @@ class EnvironWrapperTest(unittest.TestCase):
     # テスト用環境変数定義
     envstub = {
         "SECRET_KEY" : 'zettaihimitsunisitene', # SECRET_KEY
-        "DEBUG" : 'False', # DEBUG
+        "DEBUG_FLG" : 0, # DEBUG_FLG
         "ALLOWED_HOSTS" : '127.0.0.1',   # ALLOWED_HOSTS
         "DATABASES_ENGINE" : 'django.db.backends.mysql', # MySQL Driver
         "DATABASES_NAME" : 'database', # MySQL DatabaseName
@@ -33,7 +33,7 @@ class EnvironWrapperTest(unittest.TestCase):
         # 呼び出し元で環境変数UNITTESTが存在する場合は以降の処理を実行しない
         print("＜投入値＞")
         for key, value in self.envstub.items():
-            os.environ[key] = value
+            os.environ[key] = str(value) if key == "DEBUG_FLG" else value
             print(f"key:{key}, value:{value}")
     
     def testload(self) -> None:
@@ -48,8 +48,11 @@ class EnvironWrapperTest(unittest.TestCase):
         env = EnvironWrapper()
         
         for key, value in self.envstub.items():
-            param = str(env.GetParams(key)) if key == "DEBUG" else env.GetParams(key)
-            self.assertEqual(param, value)
+            expect = value
+            param = env.GetParams(key)
+            if key == "DEBUG_FLG":
+                expect = False if expect == 0 else True
+            self.assertEqual(param, expect)
             print(f"key:{key}, value:{param}")
     
 if __name__ == "__main__":

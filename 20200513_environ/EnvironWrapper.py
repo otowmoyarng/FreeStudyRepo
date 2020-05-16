@@ -10,7 +10,7 @@ class EnvironWrapper:
     # 環境変数
     defaultenv_context = {
         "SECRET_KEY" : 'naishokey', # SECRET_KEY
-        "DEBUG" : True, # DEBUG
+        "DEBUG_FLG" : 'true', # DEBUG_FLG
         "ALLOWED_HOSTS" : None,   # ALLOWED_HOSTS
         "DATABASES_ENGINE" : 'django.db.backends.mysql', # MySQL Driver
         "DATABASES_NAME" : 'database', # MySQL DatabaseName
@@ -29,8 +29,8 @@ class EnvironWrapper:
         """
         for key, value in self.defaultenv_context.items():
             param = os.getenv(key, default=value)
-            if key == "DEBUG" :
-                param = param == "True"
+            if key == "DEBUG_FLG" :
+                param = False if param.lower().startswith('false') else True
             self.getenv_context[key] = param
 
     def GetParams(self, key : str) -> object:
