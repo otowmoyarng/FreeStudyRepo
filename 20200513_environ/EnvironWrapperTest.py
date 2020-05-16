@@ -10,8 +10,15 @@ class EnvironWrapperTest(unittest.TestCase):
     
     # テスト用環境変数定義
     envstub = {
-        "DEBUG" : False, # DEBUG
-        "ALLOWED_HOSTS" : "127.0.0.1",   # ALLOWED_HOSTS
+        "SECRET_KEY" : 'zettaihimitsunisitene', # SECRET_KEY
+        "DEBUG" : 'False', # DEBUG
+        "ALLOWED_HOSTS" : '127.0.0.1',   # ALLOWED_HOSTS
+        "DATABASES_ENGINE" : 'django.db.backends.mysql', # MySQL Driver
+        "DATABASES_NAME" : 'database', # MySQL DatabaseName
+        "DATABASES_USER" : 'user', # MySQL Username
+        "DATABASES_PASSWORD" : 'password', # MySQL Password
+        "DATABASES_HOST" : 'localhost', # MySQL Hostname
+        "DATABASES_PORT" : '3300', # MySQL Portno
     }
 
     def setUp(self) -> None:
@@ -22,10 +29,11 @@ class EnvironWrapperTest(unittest.TestCase):
         Returns:
             Not Returns
         """
-        
+
+        # 呼び出し元で環境変数UNITTESTが存在する場合は以降の処理を実行しない
         print("＜投入値＞")
         for key, value in self.envstub.items():
-            os.environ[key] = str(value)
+            os.environ[key] = value
             print(f"key:{key}, value:{value}")
     
     def testload(self) -> None:
@@ -40,8 +48,9 @@ class EnvironWrapperTest(unittest.TestCase):
         env = EnvironWrapper()
         
         for key, value in self.envstub.items():
-            self.assertEqual(env.GetParams(key), value)
-            print(f"key:{key}, value:{value}")
+            param = str(env.GetParams(key)) if key == "DEBUG" else env.GetParams(key)
+            self.assertEqual(param, value)
+            print(f"key:{key}, value:{param}")
     
 if __name__ == "__main__":
     unittest.main()
