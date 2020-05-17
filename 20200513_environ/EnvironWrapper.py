@@ -11,7 +11,7 @@ class EnvironWrapper:
     defaultenv_context = {
         "SECRET_KEY" : 'naishokey', # SECRET_KEY
         "DEBUG_FLG" : 'true', # DEBUG_FLG
-        "ALLOWED_HOSTS" : None,   # ALLOWED_HOSTS
+        "ALLOWED_HOSTS" : '',   # ALLOWED_HOSTS
         "DATABASES_ENGINE" : 'django.db.backends.mysql', # MySQL Driver
         "DATABASES_NAME" : 'database', # MySQL DatabaseName
         "DATABASES_USER" : 'user', # MySQL Username
@@ -21,6 +21,8 @@ class EnvironWrapper:
     }
     # 環境変数
     getenv_context = {}
+    # ALLOWED_HOSTS区切り文字
+    sprit_word = '#'
 
     def __init__(self):
         """
@@ -31,6 +33,8 @@ class EnvironWrapper:
             param = os.getenv(key, default=value)
             if key == "DEBUG_FLG" :
                 param = False if param.lower().startswith('false') else True
+            elif key == "ALLOWED_HOSTS" :
+                param = param.split(self.sprit_word) if self.sprit_word in param else [param]
             self.getenv_context[key] = param
 
     def GetParams(self, key : str) -> object:

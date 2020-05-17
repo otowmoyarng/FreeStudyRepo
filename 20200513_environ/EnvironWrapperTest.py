@@ -11,8 +11,8 @@ class EnvironWrapperTest(unittest.TestCase):
     # テスト用環境変数定義
     envstub = {
         "SECRET_KEY" : 'zettaihimitsunisitene', # SECRET_KEY
-        "DEBUG_FLG" : 0, # DEBUG_FLG
-        "ALLOWED_HOSTS" : '127.0.0.1',   # ALLOWED_HOSTS
+        "DEBUG_FLG" : False, # DEBUG_FLG
+        "ALLOWED_HOSTS" : '127.0.0.1#localhost',   # ALLOWED_HOSTS
         "DATABASES_ENGINE" : 'django.db.backends.mysql', # MySQL Driver
         "DATABASES_NAME" : 'database', # MySQL DatabaseName
         "DATABASES_USER" : 'user', # MySQL Username
@@ -20,6 +20,8 @@ class EnvironWrapperTest(unittest.TestCase):
         "DATABASES_HOST" : 'localhost', # MySQL Hostname
         "DATABASES_PORT" : '3300', # MySQL Portno
     }
+    # ALLOWED_HOSTS区切り文字
+    sprit_word = '#'
 
     def setUp(self) -> None:
         """
@@ -30,7 +32,6 @@ class EnvironWrapperTest(unittest.TestCase):
             Not Returns
         """
 
-        # 呼び出し元で環境変数UNITTESTが存在する場合は以降の処理を実行しない
         print("＜投入値＞")
         for key, value in self.envstub.items():
             os.environ[key] = str(value) if key == "DEBUG_FLG" else value
@@ -50,8 +51,8 @@ class EnvironWrapperTest(unittest.TestCase):
         for key, value in self.envstub.items():
             expect = value
             param = env.GetParams(key)
-            if key == "DEBUG_FLG":
-                expect = False if expect == 0 else True
+            if key == "ALLOWED_HOSTS" :
+                expect = expect.split(self.sprit_word) if self.sprit_word in expect else [expect]
             self.assertEqual(param, expect)
             print(f"key:{key}, value:{param}")
     
