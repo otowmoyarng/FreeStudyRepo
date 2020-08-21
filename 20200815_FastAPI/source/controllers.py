@@ -12,8 +12,8 @@ app = FastAPI(
 )
 
 # テンプレートの宣言
-templates = Jinja2Templates(directory='templates')
-# templates = Jinja2Templates(directory='C:\\Users\\UT\\Documents\\FreeStudyRepo\\20200815_FastAPI\\source\\templates')
+# templates = Jinja2Templates(directory='templates')
+templates = Jinja2Templates(directory='C:\\Users\\UT\\Documents\\FreeStudyRepo\\20200815_FastAPI\\source\\templates')
 jinja_env = templates.env
 
 def index(request : Request):
@@ -21,13 +21,14 @@ def index(request : Request):
     return templates.TemplateResponse('index.html',
                                       {'request' : request})
 
-def admin(request : Request):
+def admin(request: Request):
+    # ユーザとタスクを取得
+    # とりあえず今はadminユーザのみ取得
     user = db.session.query(User).filter(User.username == 'admin').first()
     task = db.session.query(Task).filter(Task.user_id == user.id).all()
-    
-    # return {'request' : 'request', 'username' : 'admin'}
+    db.session.close()
+ 
     return templates.TemplateResponse('admin.html',
-                                      {'request' : request,
-                                        'user' : user,
-                                        'task' : task
-                                      })
+                                      {'request': request,
+                                       'user': user,
+                                       'task': task})
