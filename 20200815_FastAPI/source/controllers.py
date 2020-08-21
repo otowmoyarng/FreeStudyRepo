@@ -1,6 +1,8 @@
 from fastapi import FastAPI
 from starlette.requests import Request
 from starlette.templating import Jinja2Templates
+import db
+from models import User, Task
 
 # FastAPIの宣言
 app = FastAPI(
@@ -10,8 +12,8 @@ app = FastAPI(
 )
 
 # テンプレートの宣言
-# templates = Jinja2Templates(directory='templates')
-templates = Jinja2Templates(directory='C:\\Users\\UT\\Documents\\FreeStudyRepo\\20200815_FastAPI\\source\\templates')
+templates = Jinja2Templates(directory='templates')
+# templates = Jinja2Templates(directory='C:\\Users\\UT\\Documents\\FreeStudyRepo\\20200815_FastAPI\\source\\templates')
 jinja_env = templates.env
 
 def index(request : Request):
@@ -20,8 +22,12 @@ def index(request : Request):
                                       {'request' : request})
 
 def admin(request : Request):
-    return {'request' : 'request', 'username' : 'admin'}
-    # return templates.TemplateResponse('admin.html',
-    #                                   {'request' : request,
-    #                                     'username' : 'admin'
-    #                                   })
+    user = db.session.query(User).filter(User.username == 'admin').first()
+    task = db.session.query(Task).filter(Task.user_id == user.id).all()
+    
+    # return {'request' : 'request', 'username' : 'admin'}
+    return templates.TemplateResponse('admin.html',
+                                      {'request' : request,
+                                        'user' : user,
+                                        'task' : task
+                                      })
