@@ -17,30 +17,29 @@ app = FastAPI(
     description='FastAPIチュートリアル：FastAPI(とstarlette)でシンプルなtoDoアプリを作りましょう．',
     version='0.9 beta'
 )
+security = HTTPBasic()
 
 # テンプレートの宣言
-# templates = Jinja2Templates(directory='templates')
-templates = Jinja2Templates(directory='C:\\Users\\UT\\Documents\\FreeStudyRepo\\20200815_FastAPI\\source\\templates')
+templates = Jinja2Templates(directory='templates')
 jinja_env = templates.env
 
 def index(request : Request):
-    # return {'request' : 'request'}
     return templates.TemplateResponse('index.html',
                                       {'request' : request})
 
-def admin(request: Request, credentials: HTTPBasicCredentials = Depends()):
+def admin(request: Request, credentials: HTTPBasicCredentials = Depends(security)):
+
     # Basic認証で受け取った情報
     username = credentials.username
     password = hashlib.md5(credentials.password.encode()).hexdigest()
 
     # ユーザとタスクを取得
-    # とりあえず今はadminユーザのみ取得
     user = db.session.query(User).filter(User.username == username).first()
     task = db.session.query(Task).filter(Task.user_id == user.id).all() if user is not None else []
     db.session.close()
  
     # 該当ユーザーが存在しない場合
-    if user in None or user.password != password:
+    if user is None or user.password != password:
         error = 'ユーザ名かパスワードが間違っています'
         raise HTTPException(
             status_code=HTTP_401_UNAUTHORIZED,
