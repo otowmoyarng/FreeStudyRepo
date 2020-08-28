@@ -6,6 +6,8 @@ from starlette.status import HTTP_401_UNAUTHORIZED
 import db, hashlib
 from models import User, Task
 import re  # new
+from mycalendar import MyCalendar
+from datetime import datetime, timedelta
 
 pattern = re.compile(r'\w{4,20}')  # 任意の4~20の英数字を示す正規表現
 pattern_pw = re.compile(r'\w{6,20}')  # 任意の6~20の英数字を示す正規表現
@@ -33,6 +35,10 @@ def admin(request: Request, credentials: HTTPBasicCredentials = Depends(security
     username = credentials.username
     password = hashlib.md5(credentials.password.encode()).hexdigest()
 
+    """ [new] 今日の日付と来週の日付"""
+    today = datetime.now()
+    next_w = today + timedelta(days=7)  # １週間後の日付
+
     # ユーザとタスクを取得
     user = db.session.query(User).filter(User.username == username).first()
     task = db.session.query(Task).filter(Task.user_id == user.id).all() if user is not None else []
@@ -46,10 +52,24 @@ def admin(request: Request, credentials: HTTPBasicCredentials = Depends(security
             detail=error,
             headers={"WWW-Authenticate": "Basic"},
         )
+    
+    """ [new] カレンダー関連 """
+    # カレンダーをHTML形式で取得
+    cal = MyCalendar(username,
+                     {t.deadline.strftime('%Y%m%d'): t.done for t in task})  # 予定がある日付をキーとして渡す
+    cal = cal.formatyear(today.year, 4)  # カレンダーをHTMLで取得
+ 
+    # 直近のタスクだけでいいので、リストを書き換える
+    task = [t for t in task if today <= t.deadline <= next_w]
+    links = [t.deadline.strftime('/todo/'+username+'/%Y/%m/%d') for t in task]  # 直近の予定リンク
+
     return templates.TemplateResponse('admin.html',
                                       {'request': request,
                                        'user': user,
-                                       'task': task}
+                                       'task': task,
+                                       'links': links,
+                                       'calendar': cal
+                                       }
                                      )
 
 async def register(request: Request):
