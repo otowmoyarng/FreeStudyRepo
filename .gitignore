@@ -7,3 +7,5 @@
 20200513_environ/__pycache__/*.pyc
 20200705_pythonRestAPI_sample/__pycache__/*.pyc
 20200718_specialmethod/__pycache__/*.pyc
+20200924_pdfload/venv/*
+20200924_pdfload/*.pdf
