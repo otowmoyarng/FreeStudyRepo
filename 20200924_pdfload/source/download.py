@@ -1,3 +1,5 @@
+from dateutil.relativedelta import relativedelta
+from datetime import datetime
 import os
 import requests
 import shutil
@@ -11,6 +13,7 @@ def download(url : str, downloadfile : str):
     Returns:
         ダウンロードしたファイル
     """
+    
     if url is None:
         print('URLが指定されていない')
         return
@@ -29,7 +32,7 @@ def download(url : str, downloadfile : str):
         raise ex
 
 if __name__ == "__main__":
-    print(os.getcwd())
-    url = 'https://www.npa.go.jp/safetylife/seianki/jisatsu/R02/202009sokuhouti.pdf'
+    one_month_ago = datetime.strftime(datetime.today() - relativedelta(months=1), '%m')
+    url = f'https://www.npa.go.jp/safetylife/seianki/jisatsu/R02/zanteiti02{one_month_ago}.pdf'
     downloadfile = os.getcwd() + '\\20200924_pdfload\\downloaded.pdf'
     download(url, downloadfile)
