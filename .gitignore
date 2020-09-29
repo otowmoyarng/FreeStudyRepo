@@ -9,3 +9,5 @@
 20200718_specialmethod/__pycache__/*.pyc
 20200924_pdfload/venv/*
 20200924_pdfload/*.pdf
+20200924_pdfload/.vscode/*
+20200924_pdfload/source/__pycache__/*.pyc
