@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+    <title>Vue.js App</title>
+    <link rel="stylesheet" href="./style/index.css">
+</head>
+<body>
+    <h3>app1</h3>
+    <div id="app1">
+        <p>{{ message }}</p>
+        <ol>
+            <li v-for="item in list">{{ item }}</li>
+        </ol>
+        <div>
+            <button v-on:click="handleClick">click</button>
+        </div>
+        <div>
+            <input v-model="message">
+        </div>
+        <div>
+            <button v-on:click="show=!show">切り替え</button>
+            <transition>
+                <p v-if="show">Hello Vue.js!</p>
+            </transition>
+        </div>
+    </div>
+    <hr>
+    <h3>app2</h3>
+    <div id="app2">
+        <!-- 1 オブジェクトのプロパティを表示 -->
+        <p>{{ message.value }}</p>
+        <!-- 2 文字列の長さを表示 -->
+        <p>{{ message.value.length }}</p>
+        <!-- 3 リストのインデックス2を表示 -->
+        <p>{{ list[2] }}</p>
+        <!-- 4 プロパティを組み合わせて使用 -->
+        <p>{{ list[num] }}</p>
+        <!-- countプロパティを表示する -->
+        <p>{{ count }}回クリックしたよ！ </p>
+        <!-- このボタンをクリックするとincrementメソッドが呼び出される -->
+        <button v-on:click="increment">カウントを増やす</button>
+        <br>
+        <button v-on:click="isActive=!isActive">isActiveを切り替える</button>
+        <p v-bind:class="{class: isChild, 'is-active': isActive }" class="ietm">動的なクラス</p>
+        <p v-bind:style="{ color: textColor, backgroundColor: bgColor }" class="item">動的なスタイル</p>
+        <div>
+            <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+                <circle cx="100" cy="75" v-bind:r="radius" fill="lightpink" />
+            </svg>
+            <input type="range" min="0" max="100" v-model="radius">
+        </div>
+        <ul>
+            <li v-for="item in list2" v-bind:id="item.id" v-bind:class="{ tuyoi: item.hp > 300 }">
+                ID.{{ item.id }} {{ item.name }} HP.{{ item.hp }}
+                <span v-if="item.hp > 300">つよい！</span>
+            </li>
+        </ul>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.13"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.5/lodash.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios@0.17.1/dist/axios.min.js"></script>
+    <script src="./script/index.js"></script>
+</body>
+</html>
