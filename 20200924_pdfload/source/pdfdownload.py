@@ -24,9 +24,12 @@ def download(url : str, downloadfile : str):
 
     try:
         r = requests.get(url, stream=True)
-        with open(downloadfile, mode='wb') as dfile:
-            r.raw.decode_content = True
-            shutil.copyfileobj(r.raw, dfile)
+        if r.status_code == requests.codes.ok:
+            with open(downloadfile, mode='wb') as dfile:
+                r.raw.decode_content = True
+                shutil.copyfileobj(r.raw, dfile)
+        else:
+            r.raise_for_status()
     except requests.exceptions.RequestException as ex:
         print(ex)
         raise ex
@@ -34,5 +37,5 @@ def download(url : str, downloadfile : str):
 if __name__ == "__main__":
     one_month_ago = datetime.strftime(datetime.today() - relativedelta(months=1), '%m')
     url = f'https://www.npa.go.jp/safetylife/seianki/jisatsu/R02/zanteiti02{one_month_ago}.pdf'
-    downloadfile = os.getcwd() + '\\20200924_pdfload\\downloaded.pdf'
+    downloadfile = os.getcwd() + '\\downloaded1.pdf'
     download(url, downloadfile)
