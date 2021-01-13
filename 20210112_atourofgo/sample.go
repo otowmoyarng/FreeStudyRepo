@@ -182,7 +182,7 @@ const Pi = 3.14
 func constants() {
 	fmt.Println(" ")
 	fmt.Println("15.Constants")
-	const World = "世界"
+	const World string = "世界"
 	fmt.Println("Hello", World)
 	fmt.Println("Happy", Pi, "Day")
 
