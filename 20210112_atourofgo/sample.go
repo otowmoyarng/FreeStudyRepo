@@ -5,10 +5,13 @@ import (
 	"math"
 	"math/rand"
 	"math/cmplx"
+	"runtime"
+	"time"
 )
 
 func main() {
 	fmt.Println("a Tour of Go 開始")
+	/* basics */
 	packages()
 	imports()
 	exportnames()
@@ -26,10 +29,25 @@ func main() {
 	constants()
 	numericConstants()
 
+	/* flowcontrol */
+	for1()
+	for2()
+	gowhile()
+	//forever()
+	if1()
+	if2()
+	ifelse()
+	switch1()
+	switch2()
+	switch3()
+	defer1()
+	defer2()
+
 	fmt.Println(" ")
 	fmt.Println("a Tour of Go 終了")
 }
 
+/* basics */
 func packages() {
 	fmt.Println(" ")
 	fmt.Println("1.Packages")
@@ -190,4 +208,140 @@ func numericConstants() {
 	fmt.Println(needInt(Small))
 	fmt.Println(needFloat(Small))
 	fmt.Println(needFloat(Big))
+}
+
+/* flowcontrol */
+func for1() {
+	fmt.Println(" ")
+	fmt.Println("1.for1")
+	sum := 0
+	for i = 0; i < 10; i++ {
+		sum += i
+	}
+	fmt.Println(sum)
+}
+
+func for2() {
+	fmt.Println(" ")
+	fmt.Println("2.for2")
+	sum := 1
+	for ; sum < 1000; {
+		sum += sum
+	}
+	fmt.Println(sum)
+}
+
+func gowhile() {
+	fmt.Println(" ")
+	fmt.Println("3.gowhile")
+	sum := 1
+	for sum < 1000 {
+		sum += sum
+	}
+	fmt.Println(sum)
+}
+
+func forever() {
+	fmt.Println(" ")
+	fmt.Println("4.forever()")
+	for {
+
+	}
+}
+
+func sqrt(x float64) string {
+	if x < 0 {
+		return sqrt(-x) + "i"
+	}
+	return fmt.Sprint(math.Sqrt(x))
+}
+
+func if1() {
+	fmt.Println(" ")
+	fmt.Println("5.if1")
+	fmt.Println(sqrt(2), sqrt(-4))
+}
+
+func pow(x, n, lim float64) float64 {
+	if v := math.Pow(x, n); v < lim {
+		return v
+	} else {
+		fmt.Printf("%g >= %g\n", v, lim)
+	}
+	return lim
+}
+func if2() {
+	fmt.Println(" ")
+	fmt.Println("6.if2")
+	fmt.Println(pow(3, 2, 10), pow(3, 3, 10))
+}
+
+func ifelse() {
+	fmt.Println(" ")
+	fmt.Println("7.ifelse")
+	fmt.Println(pow(3, 2, 10), pow(3, 3, 10))
+}
+
+func switch1() {
+	fmt.Println(" ")
+	fmt.Println("8.switch1")
+	switch os := runtime.GOOS; os {
+		case "darwin":
+			fmt.Println("OS X.")
+		case "linux":
+			fmt.Println("Linux.")
+		default:
+			fmt.Printf("%s.\n", os)
+	}
+}
+
+func switch2() {
+	fmt.Println(" ")
+	fmt.Println("9.switch2")
+	fmt.Println("When's Saturday?")
+	today := time.Now().Weekday()
+	switch time.Saturday {
+		case today + 0:
+			fmt.Println("Today.")
+		case today + 1:
+			fmt.Println("Tomorrow.")
+		case today + 2:
+			fmt.Println("In two days.")
+		default:
+			fmt.Println("Too far away.")
+	}
+}
+
+func switch3() {
+	fmt.Println(" ")
+	fmt.Println("10.switch3")
+	t := time.Now()
+	switch {
+		case t.Hour() < 12:
+			fmt.Println("Good morning!")
+		case t.Hour() < 17:
+			fmt.Println("Good afternoon.")
+		default:
+			fmt.Println("Good evening.")
+	}
+}
+
+func defer1() {
+	fmt.Println(" ")
+	fmt.Println("11.defer1")
+
+	defer fmt.Println("test")
+	defer fmt.Println("world")
+	fmt.Println("hello")
+}
+
+func defer2() {
+	fmt.Println(" ")
+	fmt.Println("12.defer2")
+
+	fmt.Println("counting")
+	for i := 0; i < 10; i++ {
+		defer fmt.Println(i)
+	}
+	fmt.Println("done")
 }
