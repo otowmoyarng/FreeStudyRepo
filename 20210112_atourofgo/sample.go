@@ -3,8 +3,8 @@ package main
 import (
 	"fmt"
 	"math"
-	"math/rand"
 	"math/cmplx"
+	"math/rand"
 	"runtime"
 	"time"
 )
@@ -40,6 +40,7 @@ func main() {
 	switch1()
 	switch2()
 	switch3()
+	switch4()
 	defer1()
 	defer2()
 
@@ -120,6 +121,7 @@ func variables() {
 }
 
 var i, j int = 1, 2
+
 func variableInitialize() {
 	fmt.Println(" ")
 	fmt.Println("9.VariableInitialize")
@@ -142,6 +144,7 @@ var (
 	MaxInt uint64     = 1<<64 - 1
 	z      complex128 = cmplx.Sqrt(-5 + 12i)
 )
+
 func basicType() {
 	fmt.Println(" ")
 	fmt.Println("11.BasicType")
@@ -179,6 +182,7 @@ func typeInference() {
 }
 
 const Pi = 3.14
+
 func constants() {
 	fmt.Println(" ")
 	fmt.Println("15.Constants")
@@ -197,6 +201,7 @@ const (
 	// Shift it right again 99 places, so we end up with 1<<1, or 2.
 	Small = Big >> 99
 )
+
 func needInt(x int) int { return x*10 + 1 }
 func needFloat(x float64) float64 {
 	return x * 0.1
@@ -225,7 +230,7 @@ func for2() {
 	fmt.Println(" ")
 	fmt.Println("2.for2")
 	sum := 1
-	for ; sum < 1000; {
+	for sum < 1000 {
 		sum += sum
 	}
 	fmt.Println(sum)
@@ -286,12 +291,12 @@ func switch1() {
 	fmt.Println(" ")
 	fmt.Println("8.switch1")
 	switch os := runtime.GOOS; os {
-		case "darwin":
-			fmt.Println("OS X.")
-		case "linux":
-			fmt.Println("Linux.")
-		default:
-			fmt.Printf("%s.\n", os)
+	case "darwin":
+		fmt.Println("OS X.")
+	case "linux":
+		fmt.Println("Linux.")
+	default:
+		fmt.Printf("%s.\n", os)
 	}
 }
 
@@ -301,14 +306,14 @@ func switch2() {
 	fmt.Println("When's Saturday?")
 	today := time.Now().Weekday()
 	switch time.Saturday {
-		case today + 0:
-			fmt.Println("Today.")
-		case today + 1:
-			fmt.Println("Tomorrow.")
-		case today + 2:
-			fmt.Println("In two days.")
-		default:
-			fmt.Println("Too far away.")
+	case today + 0:
+		fmt.Println("Today.")
+	case today + 1:
+		fmt.Println("Tomorrow.")
+	case today + 2:
+		fmt.Println("In two days.")
+	default:
+		fmt.Println("Too far away.")
 	}
 }
 
@@ -317,18 +322,35 @@ func switch3() {
 	fmt.Println("10.switch3")
 	t := time.Now()
 	switch {
-		case t.Hour() < 12:
-			fmt.Println("Good morning!")
-		case t.Hour() < 17:
-			fmt.Println("Good afternoon.")
-		default:
-			fmt.Println("Good evening.")
+	case t.Hour() < 12:
+		fmt.Println("Good morning!")
+	case t.Hour() < 17:
+		fmt.Println("Good afternoon.")
+	default:
+		fmt.Println("Good evening.")
+	}
+}
+
+func switch4() {
+	fmt.Println(" ")
+	fmt.Println("11.switch4")
+	today := time.Now().Weekday()
+	switch time.Saturday {
+	case today + 0:
+		fmt.Println("Today.")
+	case today + 1:
+		fmt.Println("Tomorrow.")
+	case today + 2:
+		fmt.Println("In two days.")
+		fallthrough
+	default:
+		fmt.Println("Too far away.")
 	}
 }
 
 func defer1() {
 	fmt.Println(" ")
-	fmt.Println("11.defer1")
+	fmt.Println("12.defer1")
 
 	defer fmt.Println("test")
 	defer fmt.Println("world")
@@ -337,7 +359,7 @@ func defer1() {
 
 func defer2() {
 	fmt.Println(" ")
-	fmt.Println("12.defer2")
+	fmt.Println("13.defer2")
 
 	fmt.Println("counting")
 	for i := 0; i < 10; i++ {
