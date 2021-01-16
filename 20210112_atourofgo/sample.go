@@ -60,6 +60,14 @@ func main() {
 	slice7()
 	slice8()
 	slice9()
+	range1()
+	range2()
+	map1()
+	map2()
+	map3()
+	map4()
+	functionvalues1()
+	functionvalues2()
 
 	fmt.Println(" ")
 	fmt.Println("a Tour of Go 終了")
@@ -609,4 +617,120 @@ func slice9() {
 }
 func printSlice3(s []int) {
 	fmt.Printf("len=%d cap=%d %v\n", len(s), cap(s), s)
+}
+
+func range1() {
+	fmt.Println(" ")
+	fmt.Println("15.range1")
+	var pow = []int{1, 2, 4, 8, 16, 32, 64, 128}
+	for i, v := range pow {
+		fmt.Printf("2**%d = %d\n", i, v)
+	}
+}
+
+func range2() {
+	fmt.Println(" ")
+	fmt.Println("16.range2")
+	pow := make([]int, 10)
+	for i := range pow {
+		pow[i] = 1 << uint(1)
+	}
+	for _, value := range pow {
+		fmt.Printf("%d\n", value)
+	}
+}
+
+type VertexA struct {
+	Lat, Long float64
+}
+
+func map1() {
+	fmt.Println(" ")
+	fmt.Println("17.map1")
+	var m map[string]VertexA = make(map[string]VertexA)
+	m["Bell Labs"] = VertexA{
+		40.68433, -74.39967,
+	}
+	fmt.Println(m["Bell Labs"])
+}
+
+func map2() {
+	fmt.Println(" ")
+	fmt.Println("18.map2")
+	var m = map[string]VertexA{
+		"Bell Labs": VertexA{
+			40.68433, -74.39967,
+		},
+		"Google": VertexA{
+			37.42202, -122.08408,
+		},
+	}
+	fmt.Println(m)
+}
+
+func map3() {
+	fmt.Println(" ")
+	fmt.Println("19.map3")
+	var m = map[string]VertexA{
+		"Bell Labs": {
+			40.68433, -74.39967,
+		},
+		"Google": {
+			37.42202, -122.08408,
+		},
+	}
+	fmt.Println(m)
+}
+
+func map4() {
+	fmt.Println(" ")
+	fmt.Println("20.map4")
+	var m = make(map[string]int)
+
+	m["Answer"] = 42
+	fmt.Println("The value:", m["Answer"])
+
+	m["Answer"] = 48
+	fmt.Println("The value:", m["Answer"])
+
+	v, ok := m["Answer"]
+	fmt.Println("The value:", v, "Present?", ok)
+
+	delete(m, "Answer")
+	fmt.Println("The value:", m["Answer"])
+
+	v, ok = m["Answer"]
+	fmt.Println("The value:", v, "Present?", ok)
+}
+
+func functionvalues1() {
+	fmt.Println(" ")
+	fmt.Println("21.functionvalues1")
+
+	hypot := func(x, y float64) float64 {
+		return math.Sqrt(x*y + y*x)
+	}
+	fmt.Println(hypot(5, 12))
+	fmt.Println(compute(hypot))
+	fmt.Println(compute(math.Pow))
+}
+func compute(fn func(float64, float64) float64) float64 {
+	return fn(3, 4)
+}
+
+func functionvalues2() {
+	fmt.Println(" ")
+	fmt.Println("22.functionvalues2")
+
+	pos, neg := adder(), adder()
+	for i := 0; i < 10; i++ {
+		fmt.Println(i, pos(i), neg(-2*i))
+	}
+}
+func adder() func(int) int {
+	sum := 0
+	return func(x int) int {
+		sum += x
+		return sum
+	}
 }
