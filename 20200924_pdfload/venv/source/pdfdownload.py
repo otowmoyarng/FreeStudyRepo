@@ -35,7 +35,7 @@ def download(url : str, downloadfile : str):
         raise ex
 
 if __name__ == "__main__":
-    one_month_ago = datetime.strftime(datetime.today() - relativedelta(months=1), '%m')
-    url = f'https://www.npa.go.jp/safetylife/seianki/jisatsu/R02/zanteiti02{one_month_ago}.pdf'
-    downloadfile = os.getcwd() + '\\downloaded1.pdf'
+    one_month_ago = datetime.strftime(datetime.today() - relativedelta(months=2), '%m')
+    url = f'https://www.npa.go.jp/safetylife/seianki/jisatsu/R02/zantei02{one_month_ago}.pdf'
+    downloadfile = os.getcwd() + f'\\zantei02{one_month_ago}.pdf'
     download(url, downloadfile)
