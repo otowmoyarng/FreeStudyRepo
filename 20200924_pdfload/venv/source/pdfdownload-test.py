@@ -1,6 +1,7 @@
 from dateutil.relativedelta import relativedelta
 from datetime import datetime
 from pdfdownload import download
+from icecream import ic
 import os
 import requests
 import unittest
@@ -37,9 +38,9 @@ class TestPdfdownload(unittest.TestCase):
         PDFファイルの正常系テスト
         取得可能なURLからPDFファイルを取得する
         """
-        one_month_ago = datetime.strftime(datetime.today() - relativedelta(months=1), '%m')
+        one_month_ago = datetime.strftime(datetime.today() - relativedelta(months=2), '%m')
         url = f'https://www.npa.go.jp/safetylife/seianki/jisatsu/R02/zanteiti02{one_month_ago}.pdf'
-        downloadfile = self.output_dir + '\\downloaded_Normal1.pdf'
+        downloadfile = self.output_dir + '\\downloaded\\downloaded_Normal1.pdf'
 
         removeOutputfile(downloadfile)
         download(url, downloadfile)
@@ -53,7 +54,7 @@ class TestPdfdownload(unittest.TestCase):
         """
         one_month_ago = datetime.strftime(datetime.today() - relativedelta(months=1), '%m')
         url = f'https://www.npa.go.jp/safetylife/seianki/jisatsu/R03/zanteiti02{one_month_ago}.pdf'
-        downloadfile = self.output_dir + '\\downloaded_Normal1.pdf'
+        downloadfile = self.output_dir + '\\downloaded\\downloaded_Normal1.pdf'
 
         removeOutputfile(downloadfile)
         try:
