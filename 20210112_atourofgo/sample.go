@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"image"
+	"io"
 	"math"
 	"math/cmplx"
 	"math/rand"
@@ -68,6 +70,31 @@ func main() {
 	map4()
 	functionvalues1()
 	functionvalues2()
+
+	/* Methods and Interfaces */
+	methods1()
+	methods2()
+	methods3()
+	methods4()
+	methods5()
+	methods6()
+	methods7()
+	methods8()
+	methods9()
+	methods10()
+	interfaces1()
+	interfaces2()
+	interfaces3()
+	interfaces4()
+	interfaces5()
+	interfaces6()
+	typeassertions()
+	typeswitch()
+	stringer1()
+	stringer2()
+	error1()
+	readers1()
+	images1()
 
 	fmt.Println(" ")
 	fmt.Println("a Tour of Go 終了")
@@ -403,12 +430,12 @@ func pointers() {
 	fmt.Println("p:", *p)
 	*p = 21
 	fmt.Println("i:", i)
-	fmt.Println("p:", p)
+	fmt.Println("p:", *p)
 
 	p = &j
 	*p = *p / 37
 	fmt.Println("j:", j)
-	fmt.Println("p:", p)
+	fmt.Println("p:", *p)
 }
 
 type Vertex struct {
@@ -733,4 +760,400 @@ func adder() func(int) int {
 		sum += x
 		return sum
 	}
+}
+
+type Vertex2 struct {
+	X, Y float64
+}
+
+func (v Vertex2) Abs1() float64 {
+	return math.Sqrt(v.X*v.X + v.Y*v.Y)
+}
+func methods1() {
+	fmt.Println(" ")
+	fmt.Println("1.methods1")
+
+	v := Vertex2{3, 4}
+	fmt.Println(v.Abs1())
+}
+
+func Abs2(v Vertex2) float64 {
+	return math.Sqrt(v.X*v.X + v.Y*v.Y)
+}
+func methods2() {
+	fmt.Println(" ")
+	fmt.Println("2.methods2")
+
+	v := Vertex2{3, 4}
+	fmt.Println(Abs2(v))
+}
+
+type MyFloat float64
+
+func (f MyFloat) Abs3() float64 {
+	if f < 0 {
+		return float64(f)
+	}
+	return float64(f)
+}
+func methods3() {
+	fmt.Println(" ")
+	fmt.Println("3.methods3")
+
+	f := MyFloat(-math.Sqrt2)
+	fmt.Println(f.Abs3())
+}
+
+func (v Vertex2) Scale1(f float64) {
+	v.X = v.X * f
+	v.Y = v.Y * f
+}
+func methods4() {
+	fmt.Println(" ")
+	fmt.Println("4.methods4")
+
+	v := Vertex2{3, 4}
+	v.Scale1(10)
+	fmt.Println(v.Abs1())
+}
+
+func (v *Vertex2) Scale2(f float64) {
+	v.X = v.X * f
+	v.Y = v.Y * f
+}
+func methods5() {
+	fmt.Println(" ")
+	fmt.Println("5.methods5")
+
+	v := Vertex2{3, 4}
+	v.Scale2(10)
+	fmt.Println(v.Abs1())
+}
+
+func Scale3(v *Vertex2, f float64) {
+	v.X = v.X * f
+	v.Y = v.Y * f
+}
+func methods6() {
+	fmt.Println(" ")
+	fmt.Println("6.methods6")
+
+	v := Vertex2{3, 4}
+	Scale3(&v, 10)
+	fmt.Println(Abs2(v))
+}
+
+func Scale4(v Vertex2, f float64) {
+	v.X = v.X * f
+	v.Y = v.Y * f
+}
+func methods7() {
+	fmt.Println(" ")
+	fmt.Println("7.methods7")
+
+	v := Vertex2{3, 4}
+	Scale4(v, 10)
+	fmt.Println(Abs2(v))
+}
+
+func (v *Vertex2) Scale5(f float64) {
+	v.X = v.X * f
+	v.Y = v.Y * f
+}
+func ScaleFunc(v *Vertex2, f float64) {
+	v.X = v.X * f
+	v.Y = v.Y * f
+}
+func methods8() {
+	fmt.Println(" ")
+	fmt.Println("8.methods8")
+
+	v := Vertex2{3, 4}
+	v.Scale5(2)
+	ScaleFunc(&v, 10)
+
+	p := &Vertex2{4, 3}
+	p.Scale5(3)
+	ScaleFunc(p, 8)
+
+	fmt.Println(v, p)
+}
+
+func (v Vertex2) Abs3() float64 {
+	return math.Sqrt(v.X*v.X + v.Y*v.Y)
+}
+func Absfunc(v Vertex2) float64 {
+	return math.Sqrt(v.X*v.X + v.Y*v.Y)
+}
+func methods9() {
+	fmt.Println(" ")
+	fmt.Println("9.methods9")
+
+	v := Vertex2{3, 4}
+	fmt.Println(v.Abs3())
+	fmt.Println(Absfunc(v))
+
+	p := &Vertex2{3, 4}
+	fmt.Println(p.Abs3())
+	fmt.Println(Absfunc(*p))
+}
+
+func (v *Vertex2) Scale6(f float64) {
+	v.X = v.X * f
+	v.Y = v.Y * f
+}
+func (v *Vertex2) Abs4() float64 {
+	return math.Sqrt(v.X*v.X + v.Y*v.Y)
+}
+func methods10() {
+	fmt.Println(" ")
+	fmt.Println("10.methods10")
+
+	v := &Vertex2{3, 4}
+	fmt.Printf("Before scaling: %+v, Abs: %v\n", v, v.Abs4())
+	v.Scale6(5)
+	fmt.Printf("After scaling: %+v, Abs: %v\n", v, v.Abs4())
+}
+
+type Abser interface {
+	Abs() float64
+}
+
+func interfaces1() {
+	fmt.Println(" ")
+	fmt.Println("11.interfaces1")
+
+	var a Abser
+	f := MyFloat(-math.Sqrt2)
+	v := Vertex2{3, 4}
+	// a = f
+	// a = &v
+	fmt.Println(f)
+	fmt.Println(v)
+	fmt.Println(a)
+	// fmt.Println(a.Abs())	ランタイムエラーとなる
+}
+
+type I1 interface {
+	M1()
+}
+
+type T struct {
+	S string
+}
+
+func (t T) M1() {
+	fmt.Println(t.S)
+}
+func interfaces2() {
+	fmt.Println(" ")
+	fmt.Println("12.interfaces2")
+
+	var i I1 = T{"Hello"}
+	i.M1()
+}
+
+type I2 interface {
+	M2()
+}
+type F float64
+
+func (t *T) M2() {
+	fmt.Println(t.S)
+}
+func (f F) M2() {
+	fmt.Println(f)
+}
+func interfaces3() {
+	fmt.Println(" ")
+	fmt.Println("13.interfaces3")
+
+	var i I2
+	i = &T{"Hello"}
+	describe1(i)
+	i.M2()
+
+	i = F(math.Pi)
+	describe1(i)
+	i.M2()
+}
+func describe1(i I2) {
+	fmt.Printf("(%v, %T)\n", i, i)
+}
+
+type I3 interface {
+	M3()
+}
+
+func (t *T) M3() {
+	if t == nil {
+		fmt.Println("<nil>")
+		return
+	}
+	fmt.Println(t.S)
+}
+func interfaces4() {
+	fmt.Println(" ")
+	fmt.Println("14.interfaces4")
+
+	var i I3
+	var t *T
+	i = t
+	describe2(i)
+	i.M3()
+
+	i = &T{"Hello"}
+	describe2(i)
+	i.M3()
+}
+func describe2(i I3) {
+	fmt.Printf("(%v, %T)\n", i, i)
+}
+
+type I4 interface {
+	M4()
+}
+
+func interfaces5() {
+	fmt.Println(" ")
+	fmt.Println("15.interfaces5")
+
+	var i I4
+	describe3(i)
+	// i.M4()	ランタイムエラーとなる
+}
+func describe3(i I4) {
+	fmt.Printf("(%v, %T)\n", i, i)
+}
+
+func interfaces6() {
+	fmt.Println(" ")
+	fmt.Println("16.interfaces6")
+
+	var i interface{}
+	describe4(i)
+
+	i = 42
+	describe4(i)
+
+	i = "Hello"
+	describe4(i)
+}
+func describe4(i interface{}) {
+	fmt.Printf("(%v, %T)\n", i, i)
+}
+
+func typeassertions() {
+	fmt.Println(" ")
+	fmt.Println("17.typeassertions")
+
+	var i interface{} = "hello"
+
+	s := i.(string)
+	fmt.Println(s)
+
+	s, ok := i.(string)
+	fmt.Println(s, ok)
+
+	f, ok := i.(float64)
+	fmt.Println(f, ok)
+
+	// f = i.(float64) // panic
+	// fmt.Println(f)
+}
+
+func do(i interface{}) {
+	switch v := i.(type) {
+	case int:
+		fmt.Printf("Twice %v is %v\n", v, v*2)
+	case string:
+		fmt.Printf("%q is %v bytes long\n", v, len(v))
+	default:
+		fmt.Printf("I don't know about type %T!\n", v)
+	}
+}
+func typeswitch() {
+	fmt.Println(" ")
+	fmt.Println("18.typeswitch")
+
+	do(21)
+	do("hello")
+	do(true)
+}
+
+type Person struct {
+	Name string
+	Age  int
+}
+
+func (p Person) String() string {
+	return fmt.Sprintf("%v (%v years)", p.Name, p.Age)
+}
+func stringer1() {
+	fmt.Println(" ")
+	fmt.Println("19.stringer1")
+
+	a := Person{"Arthur Dent", 42}
+	z := Person{"Zaphod Beeblebrox", 9001}
+	fmt.Println(a, z)
+}
+
+type IPAddr [4]byte
+
+func stringer2() {
+	fmt.Println(" ")
+	fmt.Println("20.stringer2")
+	hosts := map[string]IPAddr{
+		"loopback":  {127, 0, 0, 1},
+		"googleDNS": {8, 8, 8, 8},
+	}
+	for name, ip := range hosts {
+		fmt.Printf("%v: %v\n", name, ip)
+	}
+}
+
+type MyError struct {
+	When time.Time
+	What string
+}
+
+func (e *MyError) Error() string {
+	return fmt.Sprintf("at %v, %s", e.When, e.What)
+}
+
+func run() error {
+	return &MyError{time.Now(), "it didn't work"}
+}
+func error1() {
+	fmt.Println(" ")
+	fmt.Println("21.error1")
+
+	if err := run(); err != nil {
+		fmt.Println(err)
+	}
+}
+
+func readers1() {
+	fmt.Println(" ")
+	fmt.Println("22.readers1")
+
+	r := strings.NewReader("Hello, Reader!")
+	b := make([]byte, 8)
+	for {
+		n, err := r.Read(b)
+		fmt.Printf("n = %v err = %v b = %v\n", n, err, b)
+		fmt.Printf("b[:n] = %q\n", b[:n])
+		if err == io.EOF {
+			break
+		}
+	}
+}
+
+func images1() {
+	fmt.Println(" ")
+	fmt.Println("23.image1")
+
+	m := image.NewRGBA(image.Rect(0, 0, 100, 100))
+	fmt.Println(m.Bounds())
+	fmt.Println(m.At(0, 0).RGBA())
 }
