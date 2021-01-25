@@ -9,6 +9,7 @@ import (
 	"math/rand"
 	"runtime"
 	"strings"
+	"sync"
 	"time"
 )
 
@@ -95,6 +96,15 @@ func main() {
 	error1()
 	readers1()
 	images1()
+
+	/* Concurrency */
+	goroutine()
+	channel1()
+	channel2()
+	channel3()
+	select1()
+	select2()
+	mutex()
 
 	fmt.Println(" ")
 	fmt.Println("a Tour of Go 終了")
@@ -1156,4 +1166,150 @@ func images1() {
 	m := image.NewRGBA(image.Rect(0, 0, 100, 100))
 	fmt.Println(m.Bounds())
 	fmt.Println(m.At(0, 0).RGBA())
+}
+
+/* Concurrency */
+func say(s string) {
+	for i := 0; i < 5; i++ {
+		time.Sleep(100 * time.Millisecond)
+		fmt.Println(s)
+	}
+}
+func goroutine() {
+	fmt.Println(" ")
+	fmt.Println("1.goroutine")
+
+	go say("hello")
+	say("world")
+}
+
+func sum(s []int, c chan int) {
+	sum := 0
+	for _, v := range s {
+		sum += v
+	}
+	c <- sum
+}
+func channel1() {
+	fmt.Println(" ")
+	fmt.Println("2.channel1")
+
+	s := []int{7, 2, 8, -9, 4, 0}
+	c := make(chan int)
+	fmt.Println("c:", c)
+	go sum(s[:len(s)/2], c)
+	go sum(s[len(s)/2:], c)
+	fmt.Println("c:", c)
+	x, y := <-c, <-c
+	fmt.Println(x, y, x+y)
+}
+
+func channel2() {
+	fmt.Println(" ")
+	fmt.Println("3.channel2")
+
+	const chmaxlength int = 3
+
+	ch := make(chan int, chmaxlength)
+	ch <- 1
+	ch <- 2
+	ch <- 0
+	for i := 0; i < chmaxlength; i++ {
+		fmt.Println(<-ch)
+	}
+}
+
+func fibonacci1(n int, c chan int) {
+	x, y := 0, 1
+	for i := 0; i < n; i++ {
+		c <- x
+		x, y = y, x+y
+	}
+	close(c)
+}
+func channel3() {
+	fmt.Println(" ")
+	fmt.Println("4.channel3")
+
+	c := make(chan int, 10)
+	go fibonacci1(cap(c), c)
+	for i := range c {
+		fmt.Println(i)
+	}
+}
+
+func fibonacci2(c, quit chan int) {
+	x, y := 0, 1
+	for {
+		select {
+		case c <- x:
+			x, y = y, y+x
+		case <-quit:
+			fmt.Println("quit")
+			return
+		}
+	}
+}
+func select1() {
+	fmt.Println(" ")
+	fmt.Println("5.select1")
+
+	c := make(chan int)
+	quit := make(chan int)
+	go func() {
+		for i := 0; i < 10; i++ {
+			fmt.Println(<-c)
+		}
+		quit <- 0
+	}()
+	fibonacci2(c, quit)
+}
+
+func select2() {
+	fmt.Println(" ")
+	fmt.Println("6.select2")
+
+	tick := time.Tick(100 * time.Millisecond)
+	boom := time.After(500 * time.Millisecond)
+
+	for {
+		select {
+		case <-tick:
+			fmt.Println("tick.")
+		case <-boom:
+			fmt.Println("BOOM!")
+			return
+		default:
+			fmt.Println(" ")
+			time.Sleep(50 * time.Millisecond)
+		}
+	}
+}
+
+type SafeCounter struct {
+	mu sync.Mutex
+	v  map[string]int
+}
+
+func (c *SafeCounter) Inc(key string) {
+	c.mu.Lock()
+	c.v[key]++
+	c.mu.Unlock()
+}
+func (c *SafeCounter) Value(key string) int {
+	c.mu.Lock()
+	defer c.mu.Unlock()
+	return c.v[key]
+}
+func mutex() {
+	fmt.Println(" ")
+	fmt.Println("7.mutex")
+
+	c := SafeCounter{v: make(map[string]int)}
+	for i := 0; i < 1000; i++ {
+		go c.Inc("somekey")
+	}
+
+	time.Sleep(time.Second)
+	fmt.Println(c.Value("somekey"))
 }
