@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>html/templete sample</title>
+</head>
+<body>
+    <!-- list(ProductItem) -->
+    <table border="1">
+        <thead>
+            <th>商品名</th>
+            <th>価格</th>
+            <th>割引</th>
+            <th>価格（割引後）</th>
+        </thead>
+        <tbody>
+            {{ range .products}}
+            <tr>
+                <td>{{ .Name }}</td>
+                <td>{{ .Price }}</td>
+                <td>
+                    {{if eq .Discount 0}}
+                        <span>なし</span>
+                    {{end}}
+                    {{if gt .Discount 0}}
+                        <span>あり</span>
+                    {{end}}
+                    {{if ge .Discount 50}}
+                        <span>50円引き</span>
+                    {{end}}
+                    {{if lt .NewPrice .Discount}}
+                        <span>半額未満</span>
+                    {{end}}
+                    {{if le .NewPrice 100}}
+                        <span>100円以下</span>
+                    {{end}}
+                </td>
+                <td>{{ .NewPrice }}</td>
+            </tr>
+            {{end}}
+        </tbody>
+    </table>
+</body>
+</html>
