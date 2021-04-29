@@ -10,7 +10,7 @@
 20200924_pdfload/venv/Include/*
 20200924_pdfload/venv/Lib/*
 20200924_pdfload/venv/Scripts/*
-20200924_pdfload/*.pdf
+20200924_pdfload/venv/downloaded/*.xlsx
 20200924_pdfload/.vscode/*
 20200924_pdfload/venv/source/__pycache__/*.pyc
 20210127_fastAPISample/fastAPI/Include/*
