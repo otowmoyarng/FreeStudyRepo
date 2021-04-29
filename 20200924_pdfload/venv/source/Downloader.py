@@ -5,25 +5,20 @@ import urllib.request
 class Downloader:
 
     url: str
-    saveDir: str
     saveFile: str
-    saveFilePath: str
 
-    def __init__(self, url: str, savedir: str, savefile: str):
+    def __init__(self, url: str, savefile: str):
         """[summary]
         コンストラクタ
         Args:
             url ([str]): ダウンロード先のurl
-            savedir ([str]): ダウンロードファイルの保存先フルパス
             savefile ([str]): ダウンロードファイル名
         """
         super().__init__()
         self.url = url
-        self.saveDir = savedir
         self.saveFile = savefile
-        self.saveFullpath = savedir + os.sep + savefile
 
-    def download(self):
+    def Do(self):
         """[summary]
         指定したurlからファイルをダウンロードする
         Args:
@@ -37,10 +32,11 @@ class Downloader:
             print('URLが指定されていない')
             return
 
-        if os.path.exists(self.saveFullpath):
+        if os.path.exists(self.saveFile):
             print('ファイルが既にダウンロードされている')
             return
 
-        data = urllib.request.urlopen(self.url).read()
-        with open(self.saveFullpath, mode="wb") as f:
-            f.write(data)
+        urllib.request.urlretrieve(self.url, self.saveFile)
+        # data = urllib.request.urlopen(self.url).read()
+        # with os.open(self.saveFile, mode="wb") as f:
+        #     f.write(data)
