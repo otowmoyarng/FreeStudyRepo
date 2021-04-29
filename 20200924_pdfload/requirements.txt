@@ -5,6 +5,7 @@ chardet==3.0.4
 colorama==0.4.4
 executing==0.5.4
 flake8==3.9.1
+freezegun==1.1.0
 icecream==2.0.0
 idna==2.10
 mccabe==0.6.1

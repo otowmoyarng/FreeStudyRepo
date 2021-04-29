@@ -1,7 +1,13 @@
-from Downloader import Downloader
+from Downloader import getURL, getFileName, getSavePath, download
+from datetime import datetime
+from dateutil.relativedelta import relativedelta
+import freezegun
 import os
 import pathlib
 import unittest
+
+now = datetime.now()
+lastmonth = now - relativedelta(months=1)
 
 
 def removeOutputfile(filepath: str):
@@ -21,55 +27,67 @@ class DownloaderTest(unittest.TestCase):
         unittest ([type]): [description]
     """
 
-    output_dir: str
-    baseurl: str
+    expect_url: str = "https://www.npa.go.jp/safetylife/seianki/jisatsu/R03/202103zantei.xlsx"
+    expect_savePath: str = R"C:\Users\ut\Documents\FreeStudyRepo\20200924_pdfload\venv\downloaded\202103zantei.xlsx"
 
-    def setUp(self):
+    @freezegun.freeze_time(now)
+    def test_getURL1(self):
         """[summary]
-        各テスト前に呼び出されるメソッド
-        output_dirを初期化する
-        Args:
-            methodName ([type]): [description]
+        正常系テスト
+        取得可能なURLを取得する
         """
-        self.baseurl = "https://www.npa.go.jp/safetylife/seianki/jisatsu"
+        url = getURL()
+        self.assertEqual(self.expect_url, url)
 
-        pwd = pathlib.Path(__file__)
-        self.output_dir = os.path.join(
-            str(pwd.parents[1].resolve()), "downloaded")
+    @freezegun.freeze_time(lastmonth)
+    def test_getURL2(self):
+        """[summary]
+        異常系テスト
+        取得可能なURLを取得する
+        """
+        url = getURL()
+        self.assertNotEqual(self.expect_url, url)
 
-    def test_Normal1(self):
+    @freezegun.freeze_time(now)
+    def test_getFileName(self):
+        """[summary]
+        正常系テスト
+        取得可能なURLを取得する
+        """
+        fileName = getFileName()
+        expect_fileName = "202103zantei.xlsx"
+        self.assertEqual(expect_fileName, fileName)
+
+    @freezegun.freeze_time(now)
+    def test_getSavePath(self):
+        """[summary]
+        正常系テスト
+        取得可能なURLを取得する
+        """
+        savePath = getSavePath()
+        self.assertEqual(self.expect_savePath, savePath)
+
+    @freezegun.freeze_time(now)
+    def test_download1(self):
         """[summary]
         正常系テスト
         取得可能なURLからデータファイルを取得する
         """
-        downloadFinename = "202103zantei.xlsx"
+        removeOutputfile(self.expect_savePath)
+        datafile, candl = download()
+        self.assertEqual(self.expect_savePath, datafile)
+        self.assertTrue(candl)
 
-        url = f'{self.baseurl}/R03/{downloadFinename}'
-        # print(f'url:{url}')
-        savefile = os.path.join(self.output_dir, downloadFinename)
-        # print(f'savefile:{savefile}')
-        removeOutputfile(savefile)
-
-        ins = Downloader(url, savefile)
-        ins.Do()
-
-        self.assertTrue(os.path.exists(savefile))
-
-    def test_Abnormal1(self):
+    @freezegun.freeze_time(lastmonth)
+    def test_download2(self):
         """[summary]
         異常系テスト
         取得不可なURLからデータファイルを取得する
         """
-        downloadFinename = "202100zantei.xlsx"
-
-        url = f'{self.baseurl}/R03/{downloadFinename}'
-        savefile = os.path.join(self.output_dir, downloadFinename)
-        removeOutputfile(savefile)
-
-        ins = Downloader(url, savefile)
-        ins.Do()
-
-        self.assertTrue(os.path.exists(savefile))
+        removeOutputfile(self.expect_savePath)
+        datafile, candl = download()
+        self.assertIsNone(datafile)
+        self.assertFalse(candl)
 
 
 if __name__ == "__main__":
