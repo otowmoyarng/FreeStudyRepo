@@ -7,38 +7,41 @@ import pathlib
 import urllib.request
 
 
-def getURL() -> str:
+def getURL(addmonth: int = 0) -> str:
     """[summary]
     ダウンロードするURLを取得する
-
+    Args:
+        addmonth ([int]): 
     Returns:
         str: [description]
     """
     reiwaStartYear = 2019
-    targetym = datetime.today() - relativedelta(months=1)
+    targetym = datetime.today() - relativedelta(months=(1 + addmonth))
     targetNendo = "R" + str(targetym.year - reiwaStartYear + 1).zfill(2)
-    dataFilename = getFileName()
+    dataFilename = getFileName(addmonth)
     url = f'https://www.npa.go.jp/safetylife/seianki/jisatsu/{targetNendo}/{dataFilename}'
     return url
 
 
-def getFileName() -> str:
+def getFileName(addmonth: int = 0) -> str:
     """[summary]
     ダウンロードするファイル名を取得する
-
+    Args:
+        addmonth ([int]): 
     Returns:
         str: [description]
     """
-    targetym = datetime.today() - relativedelta(months=1)
+    targetym = datetime.today() - relativedelta(months=(1 + addmonth))
     dataFilename = str(targetym.year * 100 +
                        targetym.month) + "zantei.xlsx"
     return dataFilename
 
 
-def getSavePath() -> str:
+def getSavePath(addmonth: int = 0) -> str:
     """[summary]
     ダウンロード先のパスを取得する
-
+    Args:
+        addmonth ([int]): 
     Returns:
         str: [description]
     """
@@ -46,28 +49,30 @@ def getSavePath() -> str:
     savePath = os.path.join(
         str(pwd.parents[1].resolve()),
         "downloaded",
-        getFileName())
+        getFileName(addmonth))
     return savePath
 
 
-def download(url: str = None) -> Tuple[str, bool]:
+def download(url: str = None, addmonth: int = 0) -> Tuple[str, bool]:
     """[summary]
     指定したurlからファイルをダウンロードする
     Args:
         url ([str]): ダウンロード先のurl
+        addmonth ([int]): 
     Returns:
         ダウンロードしたファイル
         ダウンロードできたか(true/false)
     """
 
     if url is None:
-        url = getURL()
+        url = getURL(addmonth)
 
-    saveFile = getSavePath()
+    saveFile = getSavePath(addmonth)
     if os.path.exists(saveFile):
         print('ファイルが既にダウンロードされている')
         return None, False
 
+    print(f'url:{url}')
     try:
         urllib.request.urlretrieve(url, saveFile)
     except Exception as e:
@@ -78,7 +83,3 @@ def download(url: str = None) -> Tuple[str, bool]:
             raise e
     else:
         return saveFile, True
-
-
-if __name__ == "__main__":
-    download(getURL(), getSavePath())
