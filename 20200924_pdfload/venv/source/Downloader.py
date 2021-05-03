@@ -70,7 +70,7 @@ def download(url: str = None, addmonth: int = 0) -> Tuple[str, bool]:
     saveFile = getSavePath(addmonth)
     if os.path.exists(saveFile):
         print('ファイルが既にダウンロードされている')
-        return None, False
+        return saveFile, True
 
     print(f'url:{url}')
     try:
