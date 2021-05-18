@@ -22,3 +22,7 @@
 20210204_fastAPI/FastAPISample/Sources/__pycache__/*.pyc
 20210204_fastAPI/FastAPISample/Scripts/*
 20210506_connpass-api/json/*.json
+20210518_gcpstudy/fastapi_gae/gae/__pycache__/*.pyc
+20210518_gcpstudy/fastapi_gae/gae/Include/*
+20210518_gcpstudy/fastapi_gae/gae/Lib/*
+20210518_gcpstudy/fastapi_gae/gae/Scripts/*
