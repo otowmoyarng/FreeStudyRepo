@@ -7,7 +7,6 @@ namespace ConsoleApp
     {
         static void Main(string[] args)
         {
-            //Console.WriteLine("Hello World!");
             Lambda la = new Lambda();
             la.Do();
         }
