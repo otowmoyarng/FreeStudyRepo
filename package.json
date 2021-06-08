@@ -1,0 +1,20 @@
+{
+  "name": "FreeStudyRepo",
+  "version": "1.0.0",
+  "description": "基礎から学ぶ Vue.js\r https://cr-vue.mio3io.com/guide/",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/otowmoyarng/FreeStudyRepo.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/otowmoyarng/FreeStudyRepo/issues"
+  },
+  "homepage": "https://github.com/otowmoyarng/FreeStudyRepo#readme"
+}
