@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/otowmoyarng/FreeStudyRepo/issues"
   },
-  "homepage": "https://github.com/otowmoyarng/FreeStudyRepo#readme"
+  "homepage": "https://github.com/otowmoyarng/FreeStudyRepo#readme",
+  "devDependencies": {
+    "electron": "^13.1.1"
+  }
 }
