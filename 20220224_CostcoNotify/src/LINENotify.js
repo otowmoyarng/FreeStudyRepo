@@ -6,7 +6,7 @@ const url = "https://notify-api.line.me/api/notify"
  */
 function SendNotify(messageList) {
 
-    let message;
+    let message = "";
     messageList.forEach(item => {
         message += `\n${item}`
     });

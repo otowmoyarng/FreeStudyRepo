@@ -11,12 +11,11 @@ function Main() {
     threads.forEach(thread => {
         const gmails = thread.getMessages();
         gmails.forEach(gmail => {
-            const bodylist = gmail.getPlainBody().split('\r\n');
+            const bodylist = gmail.getPlainBody().split('\r\n').slice(0, 9);
             // ３行目と４行目の条件が一致したらリンクを送信する
             const findIndex = bodylist.indexOf('画像付ﾒﾙﾏｶﾞはこちらでご覧いただけます。');
             if (findIndex === 2) {
-                const sliced = bodylist.slice(findIndex, findIndex + 1);
-                const url = sliced[sliced.length - 1].replace(' (PC専用ｻｲﾄ)', '');
+                const url = bodylist[findIndex + 1].replace(' (PC専用ｻｲﾄ)', '');
                 SendNotify(["メールマガジンが届きました。", url]);
 
                 sheetAccessor.Send(gmail.getSubject());
