@@ -16,7 +16,7 @@ function Main() {
             const findIndex = bodylist.indexOf('画像付ﾒﾙﾏｶﾞはこちらでご覧いただけます。');
             if (findIndex === 2) {
                 const url = bodylist[findIndex + 1].replace(' (PC専用ｻｲﾄ)', '');
-                SendNotify(["メールマガジンが届きました。", url]);
+                SendNotify([gmail.getSubject(), url]);
 
                 sheetAccessor.Send(gmail.getSubject());
             }
