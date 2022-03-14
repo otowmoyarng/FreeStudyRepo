@@ -3,9 +3,9 @@ function SheetAccessorTest_GetLogs() {
 }
 
 function SheetAccessorTest_GetLog() {
-    const params = ["2022/01", "2020/02"];
+    const params = [new Date(2022, 1, 17), new Date(2022, 1, 18)];
     params.forEach(param => {
-        console.log(`param:${param}, GetLogs:`, sheetAccessor.GetLogs());
+        console.log(`param:${Common.GetCurrentYmd(param)}, GetLogs:`, sheetAccessor.GetLog(param));
     });
 }
 
