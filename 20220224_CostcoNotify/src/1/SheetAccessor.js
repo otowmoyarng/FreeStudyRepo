@@ -9,12 +9,18 @@ class SheetAccessor {
     GetLogs() {
         const logs = Sheet.Log.getDataRange().getValues();
         logs.shift();
-        return logs;
+        const list = logs.map(row => {
+            return {
+                Date: Common.GetCurrentYmd(row[0]),
+                Subject: row[1]
+            }
+        });
+        return list;
     }
 
     GetLog(date) {
         const logs = this.GetLogs();
-        return logs.filter(log => log[0] === Common.GetCurrentYmd(date));
+        return logs.filter(log => log.Date === Common.GetCurrentYmd(date));
     }
 
     Recent() {
