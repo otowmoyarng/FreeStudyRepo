@@ -1,12 +1,6 @@
 function Main() {
     const lastSend = sheetAccessor.Recent();
-    let targetDate = new Date();
-    if (lastSend) {
-        let dateSplit = lastSend[0].split("/");
-        targetDate = new Date(dateSplit[0], dateSplit[1] - 1, dateSplit[2]);
-        targetDate.setDate(targetDate.getDate() + 1);
-    }
-    const query = `from:コストコ会員限定メールマガジン after:${Common.GetCurrentYmd(targetDate)}`;
+    const query = `from:コストコ会員限定メールマガジン after:${lastSend.Date}`;
     const threads = GmailApp.search(query);
     threads.forEach(thread => {
         const gmails = thread.getMessages();
