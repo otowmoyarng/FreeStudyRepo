@@ -1,6 +1,6 @@
 function Main() {
-    const lastSend = sheetAccessor.Recent();
-    const query = `from:コストコ会員限定メールマガジン after:${lastSend.Date}`;
+    const today = Common.GetCurrentYmd();
+    const query = `from:コストコ会員限定メールマガジン after:${today}`;
     const threads = GmailApp.search(query);
     threads.forEach(thread => {
         const gmails = thread.getMessages();
@@ -11,8 +11,7 @@ function Main() {
             if (findIndex === 2) {
                 const url = bodylist[findIndex + 1].replace(' (PC専用ｻｲﾄ)', '');
                 SendNotify([gmail.getSubject(), url]);
-
-                sheetAccessor.Send(gmail.getSubject());
+                sheetAccessor.Send(today, gmail.getSubject(), url);
             }
         });
     });
