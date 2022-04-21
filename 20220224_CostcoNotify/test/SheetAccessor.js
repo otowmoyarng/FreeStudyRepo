@@ -14,7 +14,7 @@ function SheetAccessorTest_Recent() {
 }
 
 function SheetAccessorTest_Send() {
-    sheetAccessor.Send("テスト件名");
-    sheetAccessor.Send("テスト件名", new Date(2022, 1, 23));
+    const url = "https://www.google.com";
+    sheetAccessor.Send(new Date(2022, 1, 23), "テスト件名", url);
     console.log("更新結果:", sheetAccessor.GetLogs());
 }

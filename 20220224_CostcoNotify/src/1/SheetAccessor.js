@@ -32,8 +32,8 @@ class SheetAccessor {
         }
     }
 
-    Send(subject, date) {
-        Sheet.Log.appendRow([Common.GetCurrentYmd(date), subject]);
+    Send(date, subject, url) {
+        Sheet.Log.appendRow([date ? date : Common.GetCurrentYmd(), subject, url]);
     }
 }
 
