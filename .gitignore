@@ -35,4 +35,9 @@
 20211022_streamlit_start/streamlit-apptest/Lib/*
 20211022_streamlit_start/streamlit-apptest/Scripts/*
 20211022_streamlit_start/streamlit-apptest/share/*
+20220907_FastAPI_Practice/venv/*
+Include/*
+Lib/*
+Scripts/*
+*.pyc
 node_modules/
