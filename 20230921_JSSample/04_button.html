@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <p id="disp">ここに表示します</p>
+  <p id="disp2">ここに表示します</p>
+  <div><button type="button" id="btn">ボタンです</button></div>
+  <div><button type="button" id="btn2" onclick="document.getElementById('disp2').innerHTML = 'clicked';">ボタンです</button></div>
+  <script>
+    document.getElementById("btn").onclick = function () {
+      document.getElementById("disp").innerHTML = "OK";
+    };
+  </script>
+</body>
+
+</html>
