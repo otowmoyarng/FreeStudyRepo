@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <p id="disp">ここに表示します</p>
+    <script>
+        const area_code = "016000";
+        const url = `https://www.jma.go.jp/bosai/forecast/data/overview_forecast/${area_code}.json`;
+
+        fetch(url, {
+            method: "GET"
+        })
+        .then(response => {
+            return response.json();
+        })
+        .then(data => {
+            document.getElementById("disp").innerHTML = data["text"];
+        });
+    </script>
+</body>
+
+</html>

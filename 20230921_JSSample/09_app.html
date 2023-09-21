@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div>
+        <select id="area">
+            <option value="016000">札幌</option>
+            <option value="130000">東京</option>
+            <option value="230000">名古屋</option>
+            <option value="400000">福岡</option>
+            <option value="471000">沖縄</option>
+        </select>
+    </div>
+    <button type="button" id="btn">選択</button>
+    <p id="disp">ここに表示します</p>
+    <script>
+        const fetchAPI = (area_code) => {
+            if (!area_code) {
+                return "";
+            }
+            
+            const url = `https://www.jma.go.jp/bosai/forecast/data/overview_forecast/${area_code}.json`;
+
+            fetch(url, {
+                method: "GET"
+            })
+            .then(response => {
+                return response.json();
+            })
+            .then(data => {
+                document.getElementById("disp").innerHTML = data["text"];
+            });
+        };
+        document.getElementById("btn").onclick = function () {
+            const area_code = document.getElementById("area").value;
+            fetchAPI(area_code);
+        };
+    </script>
+</body>
+
+</html>

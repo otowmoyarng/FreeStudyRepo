@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <p id="disp">ここに表示します</p>
+    <script>
+        const data = {"period":"2025年4月13日(日) – 10月13日(月)", "area":"大阪　夢洲(ゆめしま)", "headline":"OSAKA, KANSAI, JAPAN EXPO 2025", "text":"「万博」は世界中からたくさんの人やモノが集まるイベントで、地球規模のさまざまな課題に取り組むために、世界各地から英知が集まる場です。1970年に日本、そしてアジアで最初に開催された大阪万博(EXPO’70)は日本の高度経済成長をシンボライズする一大イベントとなりました。2025年大阪・関西万博は、 2005年に開催された愛・地球博に続き、20年ぶりに日本で開催される国際博覧会です。"}
+        document.getElementById("disp").innerHTML = data["text"];
+    </script>
+</body>
+
+</html>
