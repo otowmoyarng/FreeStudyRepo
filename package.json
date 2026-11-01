@@ -19,7 +19,7 @@
   "homepage": "https://github.com/otowmoyarng/FreeStudyRepo#readme",
   "devDependencies": {
     "electron": "^42.11.16",
-    "gulp": "^4.0.2"
+    "gulp": "^5.0.1"
   },
   "dependencies": {
     "@types/jest": "^26.0.23",
